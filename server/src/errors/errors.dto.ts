@@ -1,0 +1,7 @@
+export enum ErrorCode {
+  LOGIN_INFO_INCORRECT = "001",
+  INCORRECT_TOKEN = "002",
+  EXIST_BOOK = "003",
+  BOOK_NOT_FOUND = "004",
+  INTERNAL_SERVER_ERROR = "004",
+}

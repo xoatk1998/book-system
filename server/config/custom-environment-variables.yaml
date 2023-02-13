@@ -1,0 +1,10 @@
+
+server:
+  port: SERVER_PORT
+
+mongodb:
+  uri: MONGODB_URI
+
+firebase:
+  admin: FIREBASE_ADMIN_CREDENTIALS
+  client: FIREBASE_CLIENT_CREDENTIALS

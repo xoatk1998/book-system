@@ -1,0 +1,24 @@
+service:
+  docsBaseUrl: /docs/book
+  apiVersion: 1.0.0
+  baseUrl: /api
+server:
+  host: 127.0.0.1
+  port: 3002
+  hostname:
+  scheme: http
+passport:
+  defaultStrategy: jwt
+  property: user
+  session: false
+jwt:
+  secret: 'superSecretKey'
+  expiresIn: 60000
+
+mongodb:
+  uri: mongodb+srv://root:GPfqeXxvQAzIcx32@cluster0.rkjxldk.mongodb.net/book?retryWrites=true&w=majority
+
+firebase:
+  admin: ""
+  client: ""
+  refreshTokenUrl: "https://securetoken.googleapis.com/v1/token"
