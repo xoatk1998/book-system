@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Headers,
+  HttpCode,
   HttpStatus,
   Post,
   Put,
@@ -25,10 +26,10 @@ import { User } from "../../decorators/user.decorator";
 import { UseResponseDto } from "../users/use.dto";
 import { ACCESS_TOKEN_HEADER_NAME } from "../../shared/constants";
 
-@Controller()
+@Controller('auth')
 @ApiTags("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @ApiOperation({
     operationId: "register",
@@ -38,9 +39,10 @@ export class AuthController {
     status: HttpStatus.OK,
     type: UseResponseDto,
   })
-  @Post("auth/register")
+  @Post("register") 
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
+  //  return { "_id": "6435a0e55ad7870148a33ad2", "userId": "2KH3aljByjZasDOcagrbNCxt9wk2", "name": "gitops", "email": "thien.ng2uyen@sotatek.com", "createdAt": "2023-04-11T18:03:17.031Z", "updatedAt": "2023-04-11T18:03:17.031Z", "__v": 0 }
   }
 
   @ApiOperation({
@@ -50,9 +52,24 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.OK,
   })
-  @Post("auth/login")
+  @HttpCode(HttpStatus.OK)
+  @Post("login")
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
+  }
+
+  @ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
+  @ApiOperation({
+    operationId: "indexUser",
+    description: "index user",
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: UseResponseDto,
+  })
+  @Get("users")
+  indexUsers() {
+    return this.authService.indexUser();
   }
 
   @ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
@@ -77,7 +94,7 @@ export class AuthController {
     status: HttpStatus.OK,
   })
   @ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
-  @Post("auth/logout")
+  @Post("logout")
   logout(@Headers(ACCESS_TOKEN_HEADER_NAME) token: string) {
     return this.authService.logout(token);
   }
@@ -90,7 +107,7 @@ export class AuthController {
     status: HttpStatus.OK,
   })
   @ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
-  @Put("auth/updateInfo")
+  @Put("updateInfo")
   updateInfo(@User() id: string, @Body() updateInfoInput: UpdateInfoDto) {
     return this.authService.updateInfo(id, updateInfoInput);
   }
@@ -114,7 +131,7 @@ export class AuthController {
   @ApiResponse({
     status: HttpStatus.OK,
   })
-  @Post("auth/sendPasswordResetEmail")
+  @Post("sendPasswordResetEmail")
   sendPasswordResetEmail(@Body() resetInput: RequestResetPassword) {
     return this.authService.sendPasswordResetEmail(resetInput);
   }

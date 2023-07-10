@@ -44,6 +44,7 @@ const serviceAccount = JSON.parse(config.get("firebase.admin"));
     MongooseModule.forRoot(config.get("mongodb.uri")),
     BooksModule,
     AuthModule,
+    ProjectsModule,
   ],
 })
 export class AppModule {

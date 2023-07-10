@@ -25,6 +25,7 @@ import { PinoLogger } from "nestjs-pino";
 import { HttpService } from "@nestjs/axios";
 import { UserRepository } from "../users/user.repository";
 import { IUser } from "../users/user.interface";
+import { resolve } from "path";
 
 @Injectable()
 export class AuthService {
@@ -38,6 +39,8 @@ export class AuthService {
   ) {}
 
   async register(registerDto: RegisterDto): Promise<IUser> {
+    // await this.sleep(5000)
+    //     return {"uid":"lJi0QJZk4hgRgifBLpZBXW29IJs2","displayName":null,"photoURL":null,"email":"thien.nguyen+123@gmail.com","emailVerified":false,"phoneNumber":null,"isAnonymous":false,"tenantId":null,"providerData":[{"uid":"thien.nguyen+123@gmail.com","displayName":null,"photoURL":null,"email":"thien.nguyen+123@gmail.com","phoneNumber":null,"providerId":"password"}],"apiKey":"AIzaSyBQGHYPj9ZNshDyNSCMMgZoyn9f4TXuwYM","appName":"[DEFAULT]","authDomain":"books-system-c7863.firebaseapp.com","stsTokenManager":{"apiKey":"AIzaSyBQGHYPj9ZNshDyNSCMMgZoyn9f4TXuwYM","refreshToken":"APZUo0Twk233_nmniKcXNdcOZNwakvXIK5qW3zibjMc9csnB94fXbxXP-9ZL7vWQMK1lVT2CXm7OkAmMmYKCOd42JnYE_Mai6y4YgH5Et8w0yOT4XiP3-yzGUr7D7TAmhzuFbz9NoIZGH0XMD-lkgJMVjvIkfjxW_1hBUGhe5SNi4VchNfMPzgXbz40D-6A9hqeYVuoqpDslGBkREi1km7xIeuOL7OvIIyzEMCexJFEeuEPPjCIqhpY","accessToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6ImI2NzE1ZTJmZjcxZDIyMjQ5ODk1MDAyMzY2ODMwNDc3Mjg2Nzg0ZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYm9va3Mtc3lzdGVtLWM3ODYzIiwiYXVkIjoiYm9va3Mtc3lzdGVtLWM3ODYzIiwiYXV0aF90aW1lIjoxNjgzMzA4NDE5LCJ1c2VyX2lkIjoibEppMFFKWms0aGdSZ2lmQkxwWkJYVzI5SUpzMiIsInN1YiI6ImxKaTBRSlprNGhnUmdpZkJMcFpCWFcyOUlKczIiLCJpYXQiOjE2ODMzMDg0MTksImV4cCI6MTY4MzMxMjAxOSwiZW1haWwiOiJ0aGllbi5uZ3V5ZW4rMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ0aGllbi5uZ3V5ZW4rMTIzQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.LFZc-SpK7XgbDpKEAVLRnCEuUyAyqOUjzoTzJCWI-hOoxOjGOTcTC25AS7P54z-TtY8zYGOAvLZBqr_1s6x62opbZzlyvQoAaNvp4YgF4ESXr1hk2c_X3Y2zmICFoWi-uRcMFg0sj-uLLg8XZXOw8cFJxy6BT6IWbp92wHX_qc632OpxP0-KRlQ6nZWtWL3CnrNxYClAMPjCMq-gCcVxw0kIvmCPGOFLjL_OSvJgEc2cn-03oMGBMqRTd5mnK3KKX5ApjUYnZpcUgHojzjSok1TalQM435u6uQ8Lo2T18K3x72xmfy4c4sWAA9oP0A1e8O9pZNMpPpJuIThjaJ2lIQ","expirationTime":1683312019697},"redirectEventId":null,"lastLoginAt":"1683308396106","createdAt":"1683307682429","multiFactor":{"enrolledFactors":[]}} as any;
     let { email } = registerDto;
     email = email.toLowerCase().trim();
     const user = await this.userRepository.findOne({ email });
@@ -92,7 +95,16 @@ export class AuthService {
     }
   }
 
+  async indexUser() {
+    const users = await this.userRepository.find({});
+    return users || [];
+  }
+
   async login(loginDto: LoginDto): Promise<LoginResponse> {
+    // await this.sleep(2000);
+    // return {"uid":"lJi0QJZk4hgRgifBLpZBXW29IJs2","displayName":null,"photoURL":null,"email":"thien.nguyen+123@gmail.com","emailVerified":false,"phoneNumber":null,"isAnonymous":false,"tenantId":null,"providerData":[{"uid":"thien.nguyen+123@gmail.com","displayName":null,"photoURL":null,"email":"thien.nguyen+123@gmail.com","phoneNumber":null,"providerId":"password"}],"apiKey":"AIzaSyBQGHYPj9ZNshDyNSCMMgZoyn9f4TXuwYM","appName":"[DEFAULT]","authDomain":"books-system-c7863.firebaseapp.com","stsTokenManager":{"apiKey":"AIzaSyBQGHYPj9ZNshDyNSCMMgZoyn9f4TXuwYM","refreshToken":"APZUo0Twk233_nmniKcXNdcOZNwakvXIK5qW3zibjMc9csnB94fXbxXP-9ZL7vWQMK1lVT2CXm7OkAmMmYKCOd42JnYE_Mai6y4YgH5Et8w0yOT4XiP3-yzGUr7D7TAmhzuFbz9NoIZGH0XMD-lkgJMVjvIkfjxW_1hBUGhe5SNi4VchNfMPzgXbz40D-6A9hqeYVuoqpDslGBkREi1km7xIeuOL7OvIIyzEMCexJFEeuEPPjCIqhpY","accessToken":"eyJhbGciOiJSUzI1NiIsImtpZCI6ImI2NzE1ZTJmZjcxZDIyMjQ5ODk1MDAyMzY2ODMwNDc3Mjg2Nzg0ZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYm9va3Mtc3lzdGVtLWM3ODYzIiwiYXVkIjoiYm9va3Mtc3lzdGVtLWM3ODYzIiwiYXV0aF90aW1lIjoxNjgzMzA4NDE5LCJ1c2VyX2lkIjoibEppMFFKWms0aGdSZ2lmQkxwWkJYVzI5SUpzMiIsInN1YiI6ImxKaTBRSlprNGhnUmdpZkJMcFpCWFcyOUlKczIiLCJpYXQiOjE2ODMzMDg0MTksImV4cCI6MTY4MzMxMjAxOSwiZW1haWwiOiJ0aGllbi5uZ3V5ZW4rMTIzQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ0aGllbi5uZ3V5ZW4rMTIzQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.LFZc-SpK7XgbDpKEAVLRnCEuUyAyqOUjzoTzJCWI-hOoxOjGOTcTC25AS7P54z-TtY8zYGOAvLZBqr_1s6x62opbZzlyvQoAaNvp4YgF4ESXr1hk2c_X3Y2zmICFoWi-uRcMFg0sj-uLLg8XZXOw8cFJxy6BT6IWbp92wHX_qc632OpxP0-KRlQ6nZWtWL3CnrNxYClAMPjCMq-gCcVxw0kIvmCPGOFLjL_OSvJgEc2cn-03oMGBMqRTd5mnK3KKX5ApjUYnZpcUgHojzjSok1TalQM435u6uQ8Lo2T18K3x72xmfy4c4sWAA9oP0A1e8O9pZNMpPpJuIThjaJ2lIQ","expirationTime":1683312019697},"redirectEventId":null,"lastLoginAt":"1683308396106","createdAt":"1683307682429","multiFactor":{"enrolledFactors":[]}} as any;
+    // const a = await this.userRepository.findAll();
+    // console.log(a, '----a');
     const user = await this.userRepository.findOne({ email: loginDto.email });
     if (!user || !user?.userId) {
       throw new BadRequestException(`${loginDto.email} not found`);
@@ -104,8 +116,15 @@ export class AuthService {
 
       return loginRes.user;
     } catch (e) {
+      console.log("🚀 ~ file: auth.service.ts:109 ~ AuthService ~ login ~ e:", e)
       throw new UnauthorizedException(e.message);
     }
+  }
+
+  async sleep(ms: number) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    })
   }
 
   async me(userId: string): Promise<IUser> {
